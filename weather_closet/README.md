@@ -1,6 +1,8 @@
 # Recomendador de ropa Micropython Raspberry Pi Pico W
 
-![Raspberry Pi Pico W](https://img.shields.io/badge/ESP8266-Compatible-blue)
+![Micropython_Raspberry_Pi_Pico_w](https://img.shields.io/badge/Raspberry%20Pi%20Pico%20W-Micropython%20Compatible-brightgreen)
+
+![ESP8266](https://img.shields.io/badge/ESP8266-Compatible-blue)
 
 Este proyecto es un ejemplo de una aplicación que obtiene datos de pronóstico del tiempo de una API y muestra la información en una pantalla OLED en un dispositivo basado en el microcontrolador ESP8266.
 
