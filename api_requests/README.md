@@ -1,6 +1,8 @@
 # Programa base micropython Raspberry Pi Pico W consulta API
 
-![Raspberry Pi Pico W](https://img.shields.io/badge/ESP8266-Compatible-blue)
+![ESP8266](https://img.shields.io/badge/ESP8266-Compatible-blue)
+
+![Micropython_Raspberry_Pi_Pico_w](https://img.shields.io/badge/Raspberry%20Pi%20Pico%20W-Micropython%20Compatible-brightgreen)
 
 ## Instrucciones
 
