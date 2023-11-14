@@ -1,20 +1,17 @@
+
 import network                 # Para gestionar la conexión a la red
 import gc                      # Para recolección de basura
 import time                    # Para manejar el tiempo
-import urequests as requests   # Para realizar solicitudes HTTP
 import ssd1306                 # Display oled
 import json                    # Manipular archivos Json
-from machine import Pin, I2C
+from machine import Pin, I2C   # Control pines y puerto I2C
+
 
 # Gestion automáticamente la memoria
 gc.collect()
 
 SSID = 'YOUR SSID'        # Nombre de la red WiFi
 PASSWORD = 'YOUR PASS'    # Contraseña de la red WiFi
-
-
-# URL de la API a la que se va a acceder
-URL_API = 'https://api.xor.cl/red/bus-stop/'
 
 
 def connectWifi(ssid, password):
@@ -24,38 +21,30 @@ def connectWifi(ssid, password):
     station.active(True)
     station.connect(ssid, password)
 
+    oled.text("Conectando", 10, 10)
+    oled.show()
+    dot = 10
+
     while not station.isconnected():
-        print('Conectando...')
+        print('conectando')
+        oled.text(".", dot, 20)
+        oled.show()
         time.sleep(1)
+        dot += 6
 
-    print(f'Conexión exitosa a {ssid}')
+    print(f'Conectado con éxito a {ssid}')
 
-
-def fetchApiBus(api_url, stop_bus, timeout=10):
-    # Función para obtener datos de la API
-
-    try:
-        # Realizar una solicitud GET
-        response = requests.get(api_url+stop_bus, timeout=timeout)
-
-        if response.status_code == 200:
-            return json.loads(response.text)
-        else:
-            print('Error en la solicitud. Código de respuesta HTTP:',
-                  response.status_code)
-            return None
-
-    except Exception as e:
-        print('Error en la solicitud:', str(e))
-        return None
+    oled.fill(0)
+    oled.text("Conectado", 10, 10)
+    oled.show()
 
 
 def showInOled(stop_bus_info, bus_id):
-    """
+    ''''
     Muestra en el display oled la información del bus
     más cercano a partir de la información del paradero
     y el id del recorrido del bus
-    """
+    '''
 
     id_stop_bus = stop_bus_info['id']
     services = stop_bus_info['services']
@@ -83,9 +72,9 @@ oled = ssd1306.SSD1306_I2C(128, 64, i2c, 0x3c)
 # Conectar a la red WiFi
 connectWifi(SSID, PASSWORD)
 
-
-# Modifica 'PG335' por el paradero que deseas consultar
-data = fetchApiBus(URL_API, 'PG335')
+# Abre el documento y carga los datos json
+with open("example_response.json", "r") as file:
+    data = json.loads(file)
 
 # Modifica '229' por el recorrido que deseas consultar
 showInOled(data, '229')
