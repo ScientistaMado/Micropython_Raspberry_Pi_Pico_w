@@ -19,7 +19,6 @@ URL_API = 'https://api.xor.cl/red/bus-stop/'
 
 
 def connectWifi(ssid, password):
-    # Inicializar la interfaz de estación
 
     station = network.WLAN(network.STA_IF)
     station.active(True)
@@ -27,15 +26,18 @@ def connectWifi(ssid, password):
 
     oled.fill(0)
     oled.show()
+
     oled.text("Conectando", 10, 0)
     oled.show()
     dot = 10
 
     while not station.isconnected():
         print('conectando')
+
         oled.text(".", dot, 20)
         oled.show()
         time.sleep(1)
+
         dot += 6
 
     print(f'Conexión exitosa a {ssid}')
@@ -45,12 +47,10 @@ def connectWifi(ssid, password):
     oled.show()
 
 
-def fetchApiBus(api_url, stop_bus, timeout=10):
-    # Función para obtener datos de la API
+def fetchApi(api_url, stop_bus_id, timeout=10):
 
     try:
-        # Realizar una solicitud GET
-        response = requests.get(api_url+stop_bus, timeout=timeout)
+        response = requests.get(api_url + stop_bus_id, timeout=timeout)
 
         if response.status_code == 200:
             return json.loads(response.text)
@@ -77,48 +77,49 @@ def openIcon(icon_id):
 
 
 def showInOled(stop_bus_info, bus_id):
-    """
-    Muestra en el display oled la información del bus
-    más cercano a partir de la información del paradero
-    y el id del recorrido del bus
-    """
 
     id_stop_bus = stop_bus_info['id']
     services = stop_bus_info['services']
 
     for service in services:
-        if service['id'] == bus_id and service['valid']:
-            bus = service['id']
-            distance = service['buses'][0]['meters_distance']
-            min_time = service['buses'][0]['min_arrival_time']
-            max_time = service['buses'][0]['max_arrival_time']
+        if service['id'] == bus_id:
+            if service['valid']:
+                distance = service['buses'][0]['meters_distance']
+                min_time = service['buses'][0]['min_arrival_time']
+                max_time = service['buses'][0]['max_arrival_time']
+
+            else:
+                print(service["status_description"])
+                oled.fill(0)
+                oled.text("Sin recorrido", 0, 30)
+                oled.show()
 
     def oledCenterText(text, y):
         x = int((128 - len(text)*8)/2)
         oled.text(text, x, y)
 
-    time_interval = f'{min_time} - {max_time} min'
+    t = f'{min_time}-{max_time} min'
     d = f'{distance} m'
 
     oled.fill(0)
-    oled.blit('icon_bus', 0, 10)
-    oled.text(id_stop_bus, 27, 0)
-    oled.text(bus_id, 27, 8)
-    oledCenterText(d, 16)
-    oledCenterText(time_interval, 24)
+
+    oled.blit(openIcon('icon_bus'), 25, 0)
+    oled.text(id_stop_bus, 50, 0)
+    oled.text(bus_id, 50, 8)
+
+    oledCenterText(d, 25)
+    oledCenterText(t, 40)
+
     oled.show()
 
 
 i2c = I2C(0, scl=Pin(17), sda=Pin(16))
 oled = ssd1306.SSD1306_I2C(128, 64, i2c, 0x3c)
 
-
-# Conectar a la red WiFi
 connectWifi(SSID, PASSWORD)
 
+data = fetchApi(URL_API, 'PG335')
 
-# Modifica 'PG335' por el paradero que deseas consultar
-data = fetchApiBus(URL_API, 'PG335')
-
-# Modifica '229' por el recorrido que deseas consultar
 showInOled(data, '229')
+
+print(data)
