@@ -16,7 +16,7 @@ Este proyecto es un ejemplo de una aplicación que obtiene datos de pronóstico 
 - Placas PCB perforadas
 - Conexión a Internet
 - Modelos 3D impresos Closet_bottom y Closet_frontis de la carpeta [Diseños 3D](/Diseños_3D/)
-- Protoboard 180 puntos
+- Protoboard 400 puntos sin buses + y -
 
 ## Configuración
 
