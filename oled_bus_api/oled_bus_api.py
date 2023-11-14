@@ -27,7 +27,7 @@ def connectWifi(ssid, password):
 
     oled.fill(0)
     oled.show()
-    oled.text("Conectando", 10, 10)
+    oled.text("Conectando", 10, 0)
     oled.show()
     dot = 10
 
@@ -41,7 +41,7 @@ def connectWifi(ssid, password):
     print(f'Conexión exitosa a {ssid}')
 
     oled.fill(0)
-    oled.text("Conectado", 10, 10)
+    oled.text("Conectado", 10, 0)
     oled.show()
 
 
