@@ -11,7 +11,7 @@ python
 SSID = 'TU_RED_WIFI'
 PASSWORD = 'TU_CONTRASEÑA'
 
-##Instalación
+## Instalación
 1. Instala MicroPython en tu Raspberry Pi Pico W
 2. Carga el código en tu Raspberry Pi Pico W
 3. Carga las carpetas [lib](/lib/) y [icons](/icons/) a la Raspberry Pi Pico W
