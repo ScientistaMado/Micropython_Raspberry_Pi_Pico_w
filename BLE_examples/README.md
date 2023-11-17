@@ -12,7 +12,11 @@ Este código en MicroPython implementa una conexión BLE (Bluetooth Low Energy) 
 3. 1 resistencia 220 o 330 ohms
 4. Pulsador
 
-# Configuración
+## Configuración
 
 1. Cargar la carpeta lib a la placa
 2. ejecutar el código BLE_send_recieve.py
+
+## Agradecimientos
+
+Las bibliotecas fueron obtenidas desde el github [MicroPython](https://github.com/micropython)
