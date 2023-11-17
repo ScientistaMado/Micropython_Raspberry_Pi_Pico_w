@@ -11,6 +11,7 @@ Repositorio con proyectos y plantillas para una Raspberry Pi Pico W prorgamaad c
 ## Plantillas
 1. [API Requests](/api_requests/)
 2. [Registro de desplazamiento](/Registro_desplazamiento/)
+3. [Ejemplos BLE](/BLE_examples/)
 
 ## Utilidades
 1. [Convertidor BMP a PMB](/utilities/convert_bmp_to_pbm/)
