@@ -1,0 +1,46 @@
+{
+    "id": "PG335",
+    "name": "ALMIRANTE LATORRE / ESQ. SGTO. CANDELARIA",
+    "status_code": 0,
+    "status_description": "Itinerario obtenido satisfactoriamente",
+    "services": [
+        {
+            "id": "302N",
+            "valid": false,
+            "status_description": "Fuera de horario de operacion para este paradero",
+            "buses": []
+        },
+        {
+            "id": "229",
+            "valid": true,
+            "status_description": "Servicio en Horario Hábil",
+            "buses": [
+                {
+                    "id": "FLXC-87",
+                    "meters_distance": 1198,
+                    "min_arrival_time": 0,
+                    "max_arrival_time": 5
+                }
+            ]
+        },
+        {
+            "id": "302",
+            "valid": true,
+            "status_description": "Servicio en Horario Hábil",
+            "buses": [
+                {
+                    "id": "BJFT-75",
+                    "meters_distance": 39,
+                    "min_arrival_time": 0,
+                    "max_arrival_time": 3
+                },
+                {
+                    "id": "BJFW-83",
+                    "meters_distance": 623,
+                    "min_arrival_time": 0,
+                    "max_arrival_time": 3
+                }
+            ]
+        }
+    ]
+}
