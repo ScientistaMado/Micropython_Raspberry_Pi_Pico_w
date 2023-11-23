@@ -1,4 +1,4 @@
-# BLE Simple Peripheral or BLE uart with MicroPython
+# BLE Simple Peripheral or BLE uart con MicroPython
 
 ![Micropython_Raspberry_Pi_Pico_w](https://img.shields.io/badge/Raspberry%20Pi%20Pico%20W-Micropython%20Compatible-brightgreen)
 
@@ -15,7 +15,7 @@ Este código en MicroPython implementa una conexión BLE (Bluetooth Low Energy) 
 ## Configuración
 
 1. Cargar la carpeta lib a la placa
-2. ejecutar el código BLE_send_recieve.py or BLEuart_send_receive.py
+2. Ejecutar el código BLE_send_recieve.py o BLEuart_send_receive.py
 
 ## Agradecimientos
 
