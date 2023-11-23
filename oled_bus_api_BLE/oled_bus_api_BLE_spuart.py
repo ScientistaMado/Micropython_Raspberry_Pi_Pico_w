@@ -19,14 +19,6 @@ PASSWORD = 'YOUR PASS'    # Contraseña de la red WiFi
 URL_API = 'https://api.xor.cl/red/bus-stop/'
 
 
-# default_stop_bus = {
-#    "stop_bus": "PG335",
-#    "bus_id": "229"
-# }
-#
-# with open("stop_bus.json", "w") as file:
-#    file.write(json.dumps(default_stop_bus))
-
 def connectWifi(ssid, password):
 
     station = network.WLAN(network.STA_IF)
@@ -141,7 +133,7 @@ def updateInfo():
     print(data)
 
 
-def config():
+def config_stop_bus():
 
     oled.fill(0)
     oled.text("Configurando", 4, 0)
@@ -209,7 +201,7 @@ while True:
         data = ble_uart.read()
 
         if data == b'config\r\n':
-            config()
+            config_stop_bus()
 
         elif data == b'update\r\n':
             updateInfo()
