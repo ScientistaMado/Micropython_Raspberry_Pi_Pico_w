@@ -19,6 +19,7 @@ PASSWORD = 'YOUR PASS'    # Contraseña de la red WiFi
 URL_API = 'https://api.xor.cl/red/bus-stop/'
 
 
+# Función para conexión a red WiFi existente
 def connectWifi(ssid, password):
 
     station = network.WLAN(network.STA_IF)
@@ -50,6 +51,7 @@ def connectWifi(ssid, password):
     oled.show()
 
 
+# Consulta API
 def fetchApi(api_url, stop_bus_id, timeout=15):
 
     try:
@@ -72,6 +74,7 @@ def fetchApi(api_url, stop_bus_id, timeout=15):
         return None
 
 
+# Función para dar formato íconos PBM
 def openIcon(icon_id):
 
     with open(f'icons/{icon_id}.pbm', "rb") as file:
@@ -84,6 +87,7 @@ def openIcon(icon_id):
     return framebuf.FrameBuffer(icon, x, y, framebuf.MONO_HLSB)
 
 
+# Función para mostrar datos en el display oled
 def showInOled(stop_bus_info, bus_id):
 
     id_stop_bus = stop_bus_info['id']
@@ -121,6 +125,7 @@ def showInOled(stop_bus_info, bus_id):
     oled.show()
 
 
+# Función para actualizar datos de consulta API y display oled
 def updateInfo():
 
     with open("stop_bus.json", "r") as file:
@@ -133,7 +138,8 @@ def updateInfo():
     print(data)
 
 
-def config_stop_bus():
+# Función para configurar los datos de consulta mediante BLE
+def config_ble_stop_bus():
 
     oled.fill(0)
     oled.text("Configurando", 4, 0)
@@ -183,6 +189,7 @@ def config_stop_bus():
     ble_uart.write("Saliendo de la configuración\n")
 
 
+# Configuración inicial, definición de pines, objetos y conexión WiFi
 i2c = I2C(0, scl=Pin(17), sda=Pin(16))
 oled = ssd1306.SSD1306_I2C(128, 64, i2c, 0x3c)
 
@@ -193,6 +200,8 @@ button_api = Pin(14, Pin.IN, Pin.PULL_DOWN)
 
 connectWifi(SSID, PASSWORD)
 
+
+# Bucle principal
 while True:
     if button_api.value():
         updateInfo()
@@ -201,7 +210,7 @@ while True:
         data = ble_uart.read()
 
         if data == b'config\r\n':
-            config_stop_bus()
+            config_ble_stop_bus()
 
         elif data == b'update\r\n':
             updateInfo()
