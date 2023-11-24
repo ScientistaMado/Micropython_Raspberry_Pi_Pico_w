@@ -1,9 +1,10 @@
 import ssd1306                            # Display oled
-import json                               # Manipular archivos Json
 from machine import Pin, I2C              # Control pines y puerto I2C
 import bluetooth                          # Control general BLE
 from ble_uart_peripheral import BLEUART   # Funciones específicas BLE uart
 
+
+# Configuración de pines y objetos
 ble = bluetooth.BLE()
 ble_uart = BLEUART(ble)
 
