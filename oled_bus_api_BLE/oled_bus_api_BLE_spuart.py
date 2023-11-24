@@ -27,8 +27,6 @@ def connectWifi(ssid, password):
     station.connect(ssid, password)
 
     oled.fill(0)
-    oled.show()
-
     oled.text("Conectando", 10, 0)
     oled.blit(openIcon('init'), 0, 16)
     oled.show()
@@ -159,9 +157,13 @@ def config_ble_stop_bus():
         if ble_uart.any():
             data = ble_uart.read()
             data = data.decode('utf-8')
+
             print("data: ", data)
+
             end_new_stop_bus = data.find('\r')
+
             new_stop_bus = data[:end_new_stop_bus]
+
             config['stop_bus'] = new_stop_bus
             paradero = False
 
@@ -176,8 +178,11 @@ def config_ble_stop_bus():
             data = ble_uart.read()
             data = data.decode('utf-8')
             print("data: ", data)
+
             end_new_bus_id = data.find('\r')
+
             new_bus_id = data[:end_new_bus_id]
+
             config['bus_id'] = new_bus_id
             paradero = False
 
@@ -187,6 +192,8 @@ def config_ble_stop_bus():
         file.write(json.dumps(config))
 
     ble_uart.write("Saliendo de la configuración\n")
+
+    ble_uart.close()
 
 
 # Configuración inicial, definición de pines, objetos y conexión WiFi

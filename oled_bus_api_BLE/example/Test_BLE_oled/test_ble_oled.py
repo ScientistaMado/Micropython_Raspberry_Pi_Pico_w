@@ -21,12 +21,13 @@ while True:
         oled.fill(0)
         oled.text("Button pressed", 0, 0)
         oled.show()
+
         ble_uart.write("Button pressed\r\n")
 
     # Consulta si hay datos disponibles para leer en el buffer
     if ble_uart.any():
 
-        data = ble_uart.read()  # Leemos los datos, quitándolos del buffer
+        data = ble_uart.read()  # Leemos los datos
 
         if data == b'on_off\r\n':
             led.value(not led.value())
