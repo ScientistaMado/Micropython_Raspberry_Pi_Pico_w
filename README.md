@@ -7,6 +7,7 @@ Repositorio con proyectos y plantillas para una Raspberry Pi Pico W prorgamaad c
 ## Proyectos
 1. [Weather Closet](/weather_closet/)
 2. [Oled Bus API](/oled_bus_api/)
+3. [Oled Bus API_BLE](/oled_bus_api_BLE/)
 
 ## Plantillas
 1. [API Requests](/api_requests/)
