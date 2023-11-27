@@ -1,6 +1,6 @@
 from machine import Pin, I2C
 import sh1106
-from menuoled import MENU, MENU_OPTIONS
+from menuoled import MENU_OPTIONS, MENU_LIST
 import time
 
 
@@ -36,28 +36,6 @@ def option_1_1():
     option_1_1_menu.draw()
     oled.text("NADA", 30, 18)
     oled.show()
-
-
-def navigate(menus, direction: str):
-
-    for menu in menus:
-        if menu.in_menu:
-            if direction == "up":
-                menu.navigate_up()
-                print(menu.index_navigate)
-            elif direction == "down":
-                menu.navigate_down()
-                print(menu.index_navigate)
-            else:
-                print("error de navegación")
-
-
-def select(menus):
-
-    for menu in menus:
-        if menu.in_menu:
-            menu.select_option()
-            return
 
 
 # Crear un OLED
@@ -100,9 +78,13 @@ option_1_1_menu = MENU_OPTIONS(oled)
 option_1_1_menu.add_option("Menu principal", show_main_menu)
 
 
-menu_list = [main_menu, secondary_menu,
-             simple_text_menu, show_icon_menu, option_1_1_menu]
+menu_list = [main_menu,
+             secondary_menu,
+             simple_text_menu,
+             show_icon_menu,
+             option_1_1_menu]
 
+menu = MENU_LIST(menu_list)
 
 # Configura botones de navegación
 button_down = Pin(14, Pin.IN, Pin.PULL_DOWN)
@@ -117,15 +99,15 @@ while True:
 
     if button_up.value():
         print("Arriba")
-        navigate(menu_list, "up")
+        menu.navigate("up")
         time.sleep(0.5)
 
     if button_down.value():
         print("Abajo")
-        navigate(menu_list, "down")
+        menu.navigate("down")
         time.sleep(0.5)
 
     if button_select.value():
         print("Seleccionar")
-        select(menu_list)
+        menu.select()
         time.sleep(0.5)

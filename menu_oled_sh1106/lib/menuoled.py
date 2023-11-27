@@ -103,3 +103,28 @@ class MENU_OPTIONS(MENU):
         self.in_menu = False
         action = self.options[self.index_navigate][1]
         action()
+
+
+class MENU_LIST():
+    def __init__(self, menu_list):
+        self.menu_list = menu_list
+
+    def navigate(self, direction: str):
+
+        for menu in self.menu_list:
+            if menu.in_menu:
+                if direction == "up":
+                    menu.navigate_up()
+                    print(menu.index_navigate)
+                elif direction == "down":
+                    menu.navigate_down()
+                    print(menu.index_navigate)
+                else:
+                    print("error de navegación")
+
+    def select(self):
+
+        for menu in self.menu_list:
+            if menu.in_menu:
+                menu.select_option()
+                return
