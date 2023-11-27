@@ -18,8 +18,9 @@ def simple_text():
     print("Opción 2 seleccionada")
 
     simple_text_menu.draw()
-    oled.text("Esta es la opcion", 0, 16)
-    oled.text("de texto simple", 0, 24)
+    oled.text("Esta es una", 0, 16)
+    oled.text("opcion de", 0, 24)
+    oled.text("texto simple", 0, 32)
     oled.show()
 
 
@@ -87,9 +88,9 @@ menu_list = [main_menu,
 menu = MENU_LIST(menu_list)
 
 # Configura botones de navegación
+button_up = Pin(15, Pin.IN, Pin.PULL_DOWN)
 button_down = Pin(14, Pin.IN, Pin.PULL_DOWN)
-button_up = Pin(13, Pin.IN, Pin.PULL_DOWN)
-button_select = Pin(15, Pin.IN, Pin.PULL_DOWN)
+button_select = Pin(13, Pin.IN, Pin.PULL_DOWN)
 
 
 # Dibujar el menú
@@ -100,14 +101,14 @@ while True:
     if button_up.value():
         print("Arriba")
         menu.navigate("up")
-        time.sleep(0.5)
+        time.sleep(0.3)
 
     if button_down.value():
         print("Abajo")
         menu.navigate("down")
-        time.sleep(0.5)
+        time.sleep(0.3)
 
     if button_select.value():
         print("Seleccionar")
         menu.select()
-        time.sleep(0.5)
+        time.sleep(0.3)
