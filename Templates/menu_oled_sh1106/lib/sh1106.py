@@ -77,14 +77,14 @@ import framebuf
 
 
 # a few register definitions
-_SET_CONTRAST        = const(0x81)
-_SET_NORM_INV        = const(0xa6)
-_SET_DISP            = const(0xae)
-_SET_SCAN_DIR        = const(0xc0)
-_SET_SEG_REMAP       = const(0xa0)
-_LOW_COLUMN_ADDRESS  = const(0x00)
+_SET_CONTRAST = const(0x81)
+_SET_NORM_INV = const(0xa6)
+_SET_DISP = const(0xae)
+_SET_SCAN_DIR = const(0xc0)
+_SET_SEG_REMAP = const(0xa0)
+_LOW_COLUMN_ADDRESS = const(0x00)
 _HIGH_COLUMN_ADDRESS = const(0x10)
-_SET_PAGE_ADDRESS    = const(0xB0)
+_SET_PAGE_ADDRESS = const(0xB0)
 
 
 class SH1106(framebuf.FrameBuffer):
@@ -141,7 +141,7 @@ class SH1106(framebuf.FrameBuffer):
         self.write_cmd(_SET_SCAN_DIR | (0x08 if mir_h else 0x00))
         self.flip_en = flag
         if update:
-            self.show(True) # full update
+            self.show(True)  # full update
 
     def sleep(self, value):
         self.write_cmd(_SET_DISP | (not value))
@@ -153,7 +153,7 @@ class SH1106(framebuf.FrameBuffer):
     def invert(self, invert):
         self.write_cmd(_SET_NORM_INV | (invert & 1))
 
-    def show(self, full_update = False):
+    def show(self, full_update=False):
         # self.* lookups in loops take significant time (~4fps).
         (w, p, db, rb) = (self.width, self.pages,
                           self.displaybuf, self.renderbuf)
@@ -164,7 +164,7 @@ class SH1106(framebuf.FrameBuffer):
             pages_to_update = (1 << self.pages) - 1
         else:
             pages_to_update = self.pages_to_update
-        #print("Updating pages: {:08b}".format(pages_to_update))
+        # print("Updating pages: {:08b}".format(pages_to_update))
         for page in range(self.pages):
             if (pages_to_update & (1 << page)):
                 self.write_cmd(_SET_PAGE_ADDRESS | page)
@@ -177,7 +177,7 @@ class SH1106(framebuf.FrameBuffer):
         if color is None:
             return super().pixel(x, y)
         else:
-            super().pixel(x, y , color)
+            super().pixel(x, y, color)
             page = y // 8
             self.pages_to_update |= 1 << page
 
@@ -208,7 +208,7 @@ class SH1106(framebuf.FrameBuffer):
     def scroll(self, x, y):
         # my understanding is that scroll() does a full screen change
         super().scroll(x, y)
-        self.pages_to_update =  (1 << self.pages) - 1
+        self.pages_to_update = (1 << self.pages) - 1
 
     def fill_rect(self, x, y, w, h, color):
         super().fill_rect(x, y, w, h, color)
@@ -238,6 +238,36 @@ class SH1106(framebuf.FrameBuffer):
             time.sleep_ms(20)
             res(1)
             time.sleep_ms(20)
+
+    def update_partial(self, x, y, width, height):
+        """
+        Actualiza una parte específica del display.
+
+        :param x: Coordenada X del área a actualizar.
+        :param y: Coordenada Y del área a actualizar.
+        :param width: Ancho del área a actualizar.
+        :param height: Alto del área a actualizar.
+        """
+        start_page = max(0, y // 8)
+        end_page = min(self.pages - 1, (y + height - 1) // 8)
+
+        start_col = x
+        end_col = x + width - 1
+
+        for page in range(start_page, end_page + 1):
+            self.pages_to_update |= 1 << page
+
+            self.write_cmd(_SET_PAGE_ADDRESS | page)
+            self.write_cmd(_LOW_COLUMN_ADDRESS | (start_col & 0x0F))
+            self.write_cmd(_HIGH_COLUMN_ADDRESS | ((start_col & 0xF0) >> 4))
+
+            for current_col in range(start_col, end_col + 1):
+                # Limpia el contenido anterior (píxeles negros)
+                self.write_data(bytearray([0]))
+                # Actualiza el buffer interno con píxeles negros
+                self.displaybuf[current_col + self.width * page] = 0
+
+        self.pages_to_update = 0
 
 
 class SH1106_I2C(SH1106):
