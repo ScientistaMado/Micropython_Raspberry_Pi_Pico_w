@@ -5,14 +5,14 @@
 Repositorio con proyectos y plantillas para una Raspberry Pi Pico W prorgamaad con micropython
 
 ## Proyectos
-1. [Weather Closet](/weather_closet/)
-2. [Oled Bus API](/oled_bus_api/)
-3. [Oled Bus API_BLE](/oled_bus_api_BLE/)
+1. [Weather Closet](/Proyects/weather_closet/)
+2. [Oled Bus API](/Proyects/oled_bus_api/)
+3. [Oled Bus API_BLE](/Proyects/oled_bus_api_BLE/)
 
 ## Plantillas
-1. [API Requests](/api_requests/)
-2. [Registro de desplazamiento](/Registro_desplazamiento/)
-3. [Ejemplos BLE](/BLE_examples/)
+1. [API Requests](/Templates/api_requests/)
+2. [Registro de desplazamiento](/Templates/Registro_desplazamiento/)
+3. [Ejemplos BLE](/Templates/BLE_examples/)
 
 ## Utilidades
-1. [Convertidor BMP a PMB](/utilities/convert_bmp_to_pbm/)
+1. [Convertidor BMP a PMB](/Utilities/convert_bmp_to_pbm/)
