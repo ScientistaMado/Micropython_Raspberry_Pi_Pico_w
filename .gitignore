@@ -1,3 +1,5 @@
 # Ignorar la carpeta menu_oled_ssd1306
 menu_oled_ssd1306/
+menu_oled_ss1106/
 motor_shield_L298N/
+
