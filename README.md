@@ -15,4 +15,4 @@ Repositorio con proyectos y plantillas para una Raspberry Pi Pico W prorgamaad c
 3. [Ejemplos BLE](/Templates/BLE_examples/)
 
 ## Utilidades
-1. [Convertidor BMP a PMB](/Utilities/convert_bmp_to_pbm/)
+1. [Convertidor BMP a PMB](/Random_Apps/convert_bmp_to_pbm/)
