@@ -72,8 +72,8 @@ class MENU_OPTIONS(MENU):
             height = len(self.options)*8
 
         if self.partial_update:
-            self.oled.update_partial(
-                self.x_init, self.y_init, widht, height)
+            self.oled.fill_rect(
+                self.x_init, self.y_init, widht, height, 0)
         else:
             self.oled.fill(0)
 

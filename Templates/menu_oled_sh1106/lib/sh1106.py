@@ -239,36 +239,6 @@ class SH1106(framebuf.FrameBuffer):
             res(1)
             time.sleep_ms(20)
 
-    def update_partial(self, x, y, width, height):
-        """
-        Actualiza una parte específica del display.
-
-        :param x: Coordenada X del área a actualizar.
-        :param y: Coordenada Y del área a actualizar.
-        :param width: Ancho del área a actualizar.
-        :param height: Alto del área a actualizar.
-        """
-        start_page = max(0, y // 8)
-        end_page = min(self.pages - 1, (y + height - 1) // 8)
-
-        start_col = x
-        end_col = x + width - 1
-
-        for page in range(start_page, end_page + 1):
-            self.pages_to_update |= 1 << page
-
-            self.write_cmd(_SET_PAGE_ADDRESS | page)
-            self.write_cmd(_LOW_COLUMN_ADDRESS | (start_col & 0x0F))
-            self.write_cmd(_HIGH_COLUMN_ADDRESS | ((start_col & 0xF0) >> 4))
-
-            for current_col in range(start_col, end_col + 1):
-                # Limpia el contenido anterior (píxeles negros)
-                self.write_data(bytearray([0]))
-                # Actualiza el buffer interno con píxeles negros
-                self.displaybuf[current_col + self.width * page] = 0
-
-        self.pages_to_update = 0
-
 
 class SH1106_I2C(SH1106):
     def __init__(self, width, height, i2c, res=None, addr=0x3c,
