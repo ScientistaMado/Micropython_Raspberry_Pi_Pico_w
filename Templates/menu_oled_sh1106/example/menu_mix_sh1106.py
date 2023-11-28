@@ -1,6 +1,6 @@
 from machine import Pin, I2C
 import sh1106
-from menuoled import MENU_OPTIONS, MENU_LIST
+from menuoled import MENU_OPTIONS, NAVIGATE_MENU
 import time
 
 
@@ -82,7 +82,7 @@ weather_menu.add_option("Main menu", show_main_menu)
 
 menu_list = [main_menu, weather_menu]
 
-menu = MENU_LIST(menu_list)
+menu = NAVIGATE_MENU(menu_list)
 
 # Configura botones de navegación
 button_up = Pin(15, Pin.IN, Pin.PULL_DOWN)

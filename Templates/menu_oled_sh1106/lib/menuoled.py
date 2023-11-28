@@ -118,7 +118,7 @@ class MENU_OPTIONS(MENU):
         action()
 
 
-class MENU_LIST():
+class NAVIGATE_MENU():
     def __init__(self, menu_list):
         self.menu_list = menu_list
 

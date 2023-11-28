@@ -1,6 +1,6 @@
 from machine import Pin, I2C
 import sh1106
-from menuoled import MENU_OPTIONS, MENU_LIST
+from menuoled import MENU_OPTIONS, NAVIGATE_MENU
 import time
 
 
@@ -82,7 +82,7 @@ menu_list = [led_menu,
              green_led_menu,
              ]
 
-menu = MENU_LIST(menu_list)
+menu = NAVIGATE_MENU(menu_list)
 
 # Configura botones de navegación
 button_up = Pin(15, Pin.IN, Pin.PULL_DOWN)

@@ -46,7 +46,7 @@ class MENU:
 
 class MENU_OPTIONS(MENU):
 
-    def __init__(self, oled, x_init=0, y_init=0, width_menu=128, height_option=8):
+    def __init__(self, oled, x_init=0, y_init=0, width_menu=128, height_option=8, partial_update=False):
         super().__init__(oled)
         self.options = []
         self.width = width_menu
@@ -54,6 +54,7 @@ class MENU_OPTIONS(MENU):
         self.y_init = y_init
         self.height = height_option
         self.in_menu = False
+        self.partial_update = partial_update
         self.index_navigate = 0
         self.max_index_navigate = 0
         self.index_select = None
@@ -62,9 +63,21 @@ class MENU_OPTIONS(MENU):
         self.options.append((text, action))
         self.max_index_navigate = len(self.options)-1
 
-    def draw(self):
+    def draw(self, widht=None, height=None):
+
+        if widht == None:
+            widht = self.width
+
+        if height == None:
+            height = len(self.options)*8
+
+        if self.partial_update:
+            self.oled.fill_rect(
+                self.x_init, self.y_init, widht, height, 0)
+        else:
+            self.oled.fill(0)
+
         self.in_menu = True
-        self.oled.fill(0)
 
         for i, item in enumerate(self.options):
             y = self.y_init + i*8
@@ -105,7 +118,7 @@ class MENU_OPTIONS(MENU):
         action()
 
 
-class MENU_LIST():
+class NAVIGATE_MENU():
     def __init__(self, menu_list):
         self.menu_list = menu_list
 
