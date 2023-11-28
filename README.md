@@ -14,7 +14,7 @@ Repositorio con proyectos y plantillas para una Raspberry Pi Pico W prorgamada c
 2. [Registro de desplazamiento](/Templates/Registro_desplazamiento/)
 3. [Ejemplos BLE](/Templates/BLE_examples/)
 4. [Menu oled SSD1306](/Templates/menu_oled_ssd1306)
-5. [Menu oled SH1106](/Templates/menu_oled_sh1306)
+5. [Menu oled SH1106](/Templates/menu_oled_sh1106)
 
 ## Utilidades
 1. [Convertidor BMP a PMB](/Random_Apps/convert_bmp_to_pbm/)
