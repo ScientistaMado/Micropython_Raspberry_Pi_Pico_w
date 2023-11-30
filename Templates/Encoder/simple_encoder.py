@@ -2,6 +2,8 @@ from machine import Pin
 import time
 import encoder
 
+# Rotary(dt, clk, sw) pin number only
+
 rotary = Rotary(14, 15, 13)
 val = 0
 
