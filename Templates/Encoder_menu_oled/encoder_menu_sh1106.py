@@ -15,9 +15,9 @@ def show_red_led_menu():
     red_led_menu.draw()
 
 
-def show_green_led_menu():
+def show_blue_led_menu():
     print("Red LED menu")
-    green_led_menu.draw()
+    blue_led_menu.draw()
 
 
 def red_led_on():
@@ -32,16 +32,16 @@ def red_led_off():
     red_led_menu.draw()
 
 
-def green_led_on():
-    green_led.value(1)
-    print("Green LED On")
-    green_led_menu.draw()
+def blue_led_on():
+    blue_led.value(1)
+    print("blue LED On")
+    blue_led_menu.draw()
 
 
-def green_led_off():
-    green_led.value(0)
-    print("Green LED Off")
-    green_led_menu.draw()
+def blue_led_off():
+    blue_led.value(0)
+    print("blue LED Off")
+    blue_led_menu.draw()
 
 
 # Crear un OLED
@@ -54,8 +54,8 @@ led_menu = MENU_OPTIONS(oled)
 
 
 # Agregar elementos a led_menu
+led_menu.add_option("blue LED", show_blue_led_menu)
 led_menu.add_option("Red LED", show_red_led_menu)
-led_menu.add_option("Green LED", show_green_led_menu)
 
 
 # Crea menú red_led_menu
@@ -68,19 +68,19 @@ red_led_menu.add_option("LED on", red_led_on)
 red_led_menu.add_option("LED off", red_led_off)
 
 
-# Crea menú green_led_menu
-green_led_menu = MENU_OPTIONS(oled)
+# Crea menú blue_led_menu
+blue_led_menu = MENU_OPTIONS(oled)
 
 
 # Agregar elementos a red_led_menu
-green_led_menu.add_option("LED menu", show_led_menu)
-green_led_menu.add_option("LED on", green_led_on)
-green_led_menu.add_option("LED off", green_led_off)
+blue_led_menu.add_option("LED menu", show_led_menu)
+blue_led_menu.add_option("LED on", blue_led_on)
+blue_led_menu.add_option("LED off", blue_led_off)
 
 
 menu_list = [led_menu,
              red_led_menu,
-             green_led_menu,
+             blue_led_menu,
              ]
 
 menu = NAVIGATE_MENU(menu_list)
@@ -107,8 +107,8 @@ def rotary_changed(change):
         print('RELEASE')
 
 
-red_led = Pin(19, Pin.OUT)
-green_led = Pin(18, Pin.OUT)
+red_led = Pin(11, Pin.OUT)
+blue_led = Pin(12, Pin.OUT)
 
 # Dibujar el menú
 show_led_menu()
