@@ -1,6 +1,6 @@
 from machine import Pin, I2C
 import sh1106
-import encoder
+from encoder import Rotary
 from menuoled import MENU_OPTIONS, NAVIGATE_MENU
 import time
 
@@ -91,13 +91,13 @@ rotary = Rotary(15, 14, 13)
 
 
 def rotary_changed(change):
-    if change == Rotary.ROT_CW:
-        print("Abajo")
+    if change == Rotary.ROT_CCW:
+        print("Arriba")
         menu.navigate("up")
 
-    elif change == Rotary.ROT_CCW:
+    elif change == Rotary.ROT_CW:
         menu.navigate("down")
-        print("Arriba")
+        print("Abajo")
 
     elif change == Rotary.SW_PRESS:
         print("Seleccionar")
