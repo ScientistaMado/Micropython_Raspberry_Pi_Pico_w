@@ -1,114 +1,116 @@
 from machine import Pin, I2C
 import sh1106
+from encoder import Rotary
 from menuoled import MENU_OPTIONS, NAVIGATE_MENU
 import time
 
 
-def show_main_menu():
-    print("Menú principal")
-    main_menu.draw()
+def show_led_menu():
+    print("LED Menu")
+    led_menu.draw()
 
 
-def option_1():
-    print("Opción 1 seleccionada")
-    secondary_menu.draw()
+def show_red_led_menu():
+    print("Red LED menu")
+    red_led_menu.draw()
 
 
-def simple_text():
-    print("Opción 2 seleccionada")
-
-    simple_text_menu.draw()
-    oled.text("Esta es una", 0, 16)
-    oled.text("opcion de", 0, 24)
-    oled.text("texto simple", 0, 32)
-    oled.show()
+def show_blue_led_menu():
+    print("Red LED menu")
+    blue_led_menu.draw()
 
 
-def show_icon():
-    print("Opción 3 seleccionada")
-
-    show_icon_menu.draw()
-    oled.blit(show_icon_menu.openIcon('config'), 20, 16)
-    oled.show()
+def red_led_on():
+    red_led.value(1)
+    print("Red LED On")
+    red_led_menu.draw()
 
 
-def option_1_1():
-    print("Opción 1_1 seleccionada")
-    option_1_1_menu.draw()
-    oled.text("NADA", 30, 18)
-    oled.show()
+def red_led_off():
+    red_led.value(0)
+    print("Red LED Off")
+    red_led_menu.draw()
+
+
+def blue_led_on():
+    blue_led.value(1)
+    print("blue LED On")
+    blue_led_menu.draw()
+
+
+def blue_led_off():
+    blue_led.value(0)
+    print("blue LED Off")
+    blue_led_menu.draw()
 
 
 # Crear un OLED
 i2c = I2C(0, scl=Pin(17), sda=Pin(16))
 oled = sh1106.SH1106_I2C(128, 64, i2c, rotate=180)
 
+
 # Crear un menú principal
-main_menu = MENU_OPTIONS(oled)
-
-# Agregar elementos a main_menu
-main_menu.add_option("Menu secundario", option_1)
-main_menu.add_option("Texto simple", simple_text)
-main_menu.add_option("Icono", show_icon)
+led_menu = MENU_OPTIONS(oled)
 
 
-# Crea menú de la opción 1
-secondary_menu = MENU_OPTIONS(oled)
-
-# Agregar elementos a menu_option_1
-secondary_menu.add_option("Menu principal", show_main_menu)
-secondary_menu.add_option("Opcion 1.1", option_1_1)
+# Agregar elementos a led_menu
+led_menu.add_option("blue LED", show_blue_led_menu)
+led_menu.add_option("Red LED", show_red_led_menu)
 
 
-# Crea menú de la opción texto simple
-simple_text_menu = MENU_OPTIONS(oled)
-
-# Agregar elementos a texto simple
-simple_text_menu.add_option("Menu principal", show_main_menu)
+# Crea menú red_led_menu
+red_led_menu = MENU_OPTIONS(oled)
 
 
-show_icon_menu = MENU_OPTIONS(oled)
-
-# Agregar elementos a texto simple
-show_icon_menu.add_option("Menu principal", show_main_menu)
-
-
-option_1_1_menu = MENU_OPTIONS(oled)
-
-# Agregar elementos a texto simple
-option_1_1_menu.add_option("Menu principal", show_main_menu)
+# Agregar elementos a red_led_menu
+red_led_menu.add_option("LED menu", show_led_menu)
+red_led_menu.add_option("LED on", red_led_on)
+red_led_menu.add_option("LED off", red_led_off)
 
 
-menu_list = [main_menu,
-             secondary_menu,
-             simple_text_menu,
-             show_icon_menu,
-             option_1_1_menu]
+# Crea menú blue_led_menu
+blue_led_menu = MENU_OPTIONS(oled)
+
+
+# Agregar elementos a red_led_menu
+blue_led_menu.add_option("LED menu", show_led_menu)
+blue_led_menu.add_option("LED on", blue_led_on)
+blue_led_menu.add_option("LED off", blue_led_off)
+
+
+menu_list = [led_menu,
+             red_led_menu,
+             blue_led_menu,
+             ]
 
 menu = NAVIGATE_MENU(menu_list)
 
-# Configura botones de navegación
-button_up = Pin(15, Pin.IN, Pin.PULL_DOWN)
-button_down = Pin(14, Pin.IN, Pin.PULL_DOWN)
-button_select = Pin(13, Pin.IN, Pin.PULL_DOWN)
+# Configura encoder de navegación
+# Rotary(dt, clk, sw) pin number only
+rotary = Rotary(15, 14, 13)
 
 
-# Dibujar el menú
-main_menu.draw()
-
-while True:
-
-    if button_up.value():
+def rotary_changed(change):
+    if change == Rotary.ROT_CCW:
         print("Arriba")
         menu.navigate("up")
-        time.sleep(0.3)
 
-    if button_down.value():
-        print("Abajo")
+    elif change == Rotary.ROT_CW:
         menu.navigate("down")
-        time.sleep(0.3)
+        print("Abajo")
 
-    if button_select.value():
+    elif change == Rotary.SW_PRESS:
         print("Seleccionar")
         menu.select()
-        time.sleep(0.3)
+
+    elif change == Rotary.SW_RELEASE:
+        print('RELEASE')
+
+
+red_led = Pin(11, Pin.OUT)
+blue_led = Pin(12, Pin.OUT)
+
+# Dibujar el menú
+show_led_menu()
+
+rotary.add_handler(rotary_changed)
