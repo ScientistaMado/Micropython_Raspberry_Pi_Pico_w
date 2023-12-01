@@ -1,75 +1,46 @@
 from machine import Pin, I2C
 import sh1106
-from encoder import Rotary
-from menuoled import MENU, MENU_OPTIONS, NAVIGATE_MENU
+from menuoled import MENU_OPTIONS, NAVIGATE_MENU
 import time
 
 
 def show_led_menu():
     print("LED Menu")
-
-    oled.fill(0)
-    menu_extras.centerText("Control LED", 0)
-    oled.blit(menu_extras.openIcon("led_off_2"), 80, 16)
-    oled.show()
-
     led_menu.draw()
 
 
 def show_red_led_menu():
     print("Red LED menu")
-
-    oled.fill(0)
-    menu_extras.centerText("Control Red LED", 0)
-
-    if red_led.value():
-        oled.blit(menu_extras.openIcon("led_on_2"), 80, 16)
-    else:
-        oled.blit(menu_extras.openIcon("led_off_2"), 80, 16)
-
-    oled.show()
-
     red_led_menu.draw()
 
 
 def show_blue_led_menu():
     print("Red LED menu")
-
-    oled.fill(0)
-    menu_extras.centerText("Control Blue LED", 0)
-
-    if blue_led.value():
-        oled.blit(menu_extras.openIcon("led_on_2"), 80, 16)
-    else:
-        oled.blit(menu_extras.openIcon("led_off_2"), 80, 16)
-
-    oled.show()
-
     blue_led_menu.draw()
 
 
 def red_led_on():
     red_led.value(1)
     print("Red LED On")
-    show_red_led_menu()
+    red_led_menu.draw()
 
 
 def red_led_off():
     red_led.value(0)
     print("Red LED Off")
-    show_red_led_menu()
+    red_led_menu.draw()
 
 
 def blue_led_on():
     blue_led.value(1)
-    print("blue LED On")
-    show_blue_led_menu()
+    print("Blue LED On")
+    blue_led_menu.draw()
 
 
 def blue_led_off():
     blue_led.value(0)
-    print("blue LED Off")
-    show_blue_led_menu()
+    print("Blue LED Off")
+    blue_led_menu.draw()
 
 
 # Crear un OLED
@@ -78,17 +49,16 @@ oled = sh1106.SH1106_I2C(128, 64, i2c, rotate=180)
 
 
 # Crear un menú principal
-led_menu = MENU_OPTIONS(oled, y_init=16, width_menu=66, partial_update=True)
+led_menu = MENU_OPTIONS(oled)
 
 
 # Agregar elementos a led_menu
-led_menu.add_option("Blue LED", show_blue_led_menu)
 led_menu.add_option("Red LED", show_red_led_menu)
+led_menu.add_option("Blue LED", show_blue_led_menu)
 
 
 # Crea menú red_led_menu
-red_led_menu = MENU_OPTIONS(
-    oled, y_init=16, width_menu=66, partial_update=True)
+red_led_menu = MENU_OPTIONS(oled)
 
 
 # Agregar elementos a red_led_menu
@@ -98,8 +68,7 @@ red_led_menu.add_option("LED off", red_led_off)
 
 
 # Crea menú blue_led_menu
-blue_led_menu = MENU_OPTIONS(
-    oled, y_init=16, width_menu=66, partial_update=True)
+blue_led_menu = MENU_OPTIONS(oled)
 
 
 # Agregar elementos a red_led_menu
@@ -115,7 +84,6 @@ menu_list = [led_menu,
 
 menu = NAVIGATE_MENU(menu_list)
 
-menu_extras = MENU(oled)
 # Configura encoder de navegación
 # Rotary(dt, clk, sw) pin number only
 rotary = Rotary(15, 14, 13)
