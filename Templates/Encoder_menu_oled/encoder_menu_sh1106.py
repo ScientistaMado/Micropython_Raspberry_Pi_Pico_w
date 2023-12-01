@@ -1,5 +1,6 @@
 from machine import Pin, I2C
 import sh1106
+from encoder import Rotary
 from menuoled import MENU_OPTIONS, NAVIGATE_MENU
 import time
 
