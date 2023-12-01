@@ -10,7 +10,6 @@ def show_led_menu():
 
     oled.fill(0)
     menu_extras.centerText("Control LED", 0)
-    oled.blit(menu_extras.openIcon("led_off_2"), 80, 16)
     oled.show()
 
     led_menu.draw()
