@@ -8,6 +8,10 @@ class MENU:
         self.width = oled.width
         self.height = oled.height
         self.justify = {"left": 0, "center": 1, "right": 2}
+        self.font = None
+
+    def setFont(self, font):
+        self.font = font._FONT
 
     def leftText(self, text, y, x_init=None):
         if x_init:
@@ -60,6 +64,36 @@ class MENU:
             info = [x, y, icon]
 
         return info
+
+    def text(self, string, x0=0, y0=0, color=0xffff, bgcolor=0, colors=None):
+
+        if self.font:
+            buffer = self.oled
+            font = self.font
+
+            if colors is None:
+                colors = (color, color, bgcolor, bgcolor)
+
+            x = x0
+            for c in string:
+
+                if not ord(c) in font.keys():
+                    c = "?"
+
+                row = y0
+                _w, * _font = font[ord(c)]
+                for byte in _font:
+                    unsalted = byte
+                    for col in range(x, x + _w):
+                        color = colors[unsalted & 0x03]
+                        if color is not None:
+                            buffer.pixel(col, row, color)
+                        unsalted >>= 2
+                    row += 1
+                x += _w
+
+        else:
+            self.oled.text(string, x0, y0, color)
 
 
 class MENU_OPTIONS(MENU):
