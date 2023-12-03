@@ -4,7 +4,7 @@
 
 Repositorio con proyectos y plantillas compatibles con Raspberry Pi Pico y Pico W prorgamada con micropython
 
-Las plantillas pueden requerir el uso de bibliotecas disponibles en el repositorio en la sección [Micropython_lib](/Micropython_lib/)
+Las plantillas pueden requerir el uso de bibliotecas disponibles en el repositorio en la sección [Micropython_lib](/Micropython_lib/) e íconos en formato pbm de la sección [icons_oled](/icons_oled/)
 
 ## Proyectos
 1. [Weather Closet](/Proyects/weather_closet/)
