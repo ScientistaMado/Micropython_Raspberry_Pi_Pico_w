@@ -274,16 +274,16 @@ class NAVIGATE_MENU():
             if menu.in_menu:
                 if direction == "up":
                     menu.navigate_up()
-                    print(menu.index_navigate_y)
+                    # print(menu.index_navigate_y)
                 elif direction == "down":
                     menu.navigate_down()
-                    print(menu.index_navigate_y)
+                    # print(menu.index_navigate_y)
                 elif direction == "left":
                     menu.navigate_left()
-                    print(menu.index_navigate_x)
+                    # print(menu.index_navigate_x)
                 elif direction == "right":
                     menu.navigate_right()
-                    print(menu.index_navigate_x)
+                    # print(menu.index_navigate_x)
                 else:
                     print("error de navegación")
 
