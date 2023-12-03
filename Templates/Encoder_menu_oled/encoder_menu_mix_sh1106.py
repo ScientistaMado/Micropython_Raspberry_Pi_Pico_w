@@ -115,6 +115,7 @@ menu_list = [led_menu,
 menu = NAVIGATE_MENU(menu_list)
 
 menu_extras = MENU(oled)
+
 # Configura encoder de navegación
 # Rotary(dt, clk, sw) pin number only
 rotary = Rotary(15, 14, 13)
