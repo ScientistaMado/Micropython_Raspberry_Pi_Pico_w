@@ -2,7 +2,9 @@
 
 ![Micropython_Raspberry_Pi_Pico_w](https://img.shields.io/badge/Raspberry%20Pi%20Pico%20W-Micropython%20Compatible-brightgreen)
 
-Repositorio con proyectos y plantillas para una Raspberry Pi Pico W prorgamada con micropython
+Repositorio con proyectos y plantillas compatibles con Raspberry Pi Pico y Pico W prorgamada con micropython
+
+Las plantillas pueden requerir el uso de bibliotecas disponibles en el repositorio en la sección [Micropython_lib](/Micropython_lib/)
 
 ## Proyectos
 1. [Weather Closet](/Proyects/weather_closet/)
