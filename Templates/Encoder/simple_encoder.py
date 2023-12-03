@@ -1,13 +1,12 @@
 from machine import Pin
 import time
-import encoder
+from encoder import Rotaray
 
 # Rotary(dt, clk, sw) pin number only
-
 rotary = Rotary(14, 15, 13)
-val = 0
 
 
+# Function that will be executed when there is a change in the encoder
 def rotary_changed(change):
     if change == Rotary.ROT_CW:
         print(1)
@@ -19,6 +18,7 @@ def rotary_changed(change):
         print('RELEASE')
 
 
+# Attaches rotary_changed function to rotary object
 rotary.add_handler(rotary_changed)
 
 while True:
