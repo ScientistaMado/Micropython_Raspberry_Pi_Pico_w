@@ -10,25 +10,20 @@ def show_led_menu():
 
     oled.fill(0)
     menu_extras.centerText("Control LED", 0)
+
+    if blue_led.value():
+        oled.blit(menu_extras.openIcon("led_on_2"), 75, 16)
+    else:
+        oled.blit(menu_extras.openIcon("led_off_2"), 75, 16)
+
+    if red_led.value():
+        oled.blit(menu_extras.openIcon("led_on_2"), 98, 16)
+    else:
+        oled.blit(menu_extras.openIcon("led_off_2"), 98, 16)
+
     oled.show()
 
     led_menu.draw()
-
-
-def show_red_led_menu():
-    print("Red LED menu")
-
-    oled.fill(0)
-    menu_extras.centerText("Control Red LED", 0)
-
-    if red_led.value():
-        oled.blit(menu_extras.openIcon("led_on_2"), 80, 16)
-    else:
-        oled.blit(menu_extras.openIcon("led_off_2"), 80, 16)
-
-    oled.show()
-
-    red_led_menu.draw()
 
 
 def show_blue_led_menu():
@@ -47,16 +42,20 @@ def show_blue_led_menu():
     blue_led_menu.draw()
 
 
-def red_led_on():
-    red_led.value(1)
-    print("Red LED On")
-    show_red_led_menu()
+def show_red_led_menu():
+    print("Red LED menu")
 
+    oled.fill(0)
+    menu_extras.centerText("Control Red LED", 0)
 
-def red_led_off():
-    red_led.value(0)
-    print("Red LED Off")
-    show_red_led_menu()
+    if red_led.value():
+        oled.blit(menu_extras.openIcon("led_on_2"), 80, 16)
+    else:
+        oled.blit(menu_extras.openIcon("led_off_2"), 80, 16)
+
+    oled.show()
+
+    red_led_menu.draw()
 
 
 def blue_led_on():
@@ -69,6 +68,18 @@ def blue_led_off():
     blue_led.value(0)
     print("blue LED Off")
     show_blue_led_menu()
+
+
+def red_led_on():
+    red_led.value(1)
+    print("Red LED On")
+    show_red_led_menu()
+
+
+def red_led_off():
+    red_led.value(0)
+    print("Red LED Off")
+    show_red_led_menu()
 
 
 # Crear un OLED
@@ -85,17 +96,6 @@ led_menu.add_option("Blue LED", show_blue_led_menu)
 led_menu.add_option("Red LED", show_red_led_menu)
 
 
-# Crea menú red_led_menu
-red_led_menu = MENU_OPTIONS(
-    oled, y_init=16, width_menu=66, partial_update=True)
-
-
-# Agregar elementos a red_led_menu
-red_led_menu.add_option("LED menu", show_led_menu)
-red_led_menu.add_option("LED on", red_led_on)
-red_led_menu.add_option("LED off", red_led_off)
-
-
 # Crea menú blue_led_menu
 blue_led_menu = MENU_OPTIONS(
     oled, y_init=16, width_menu=66, partial_update=True)
@@ -107,9 +107,20 @@ blue_led_menu.add_option("LED on", blue_led_on)
 blue_led_menu.add_option("LED off", blue_led_off)
 
 
+# Crea menú red_led_menu
+red_led_menu = MENU_OPTIONS(
+    oled, y_init=16, width_menu=66, partial_update=True)
+
+
+# Agregar elementos a red_led_menu
+red_led_menu.add_option("LED menu", show_led_menu)
+red_led_menu.add_option("LED on", red_led_on)
+red_led_menu.add_option("LED off", red_led_off)
+
+
 menu_list = [led_menu,
-             red_led_menu,
              blue_led_menu,
+             red_led_menu,
              ]
 
 menu = NAVIGATE_MENU(menu_list)
