@@ -3,15 +3,19 @@ import framebuf
 
 class MENU:
 
-    def __init__(self, oled):
+    def __init__(self, oled, internal_var=None):
         self.oled = oled
         self.width = oled.width
         self.height = oled.height
         self.justify = {"left": 0, "center": 1, "right": 2}
         self.font = None
+        self.internal_var = internal_var
 
     def setFont(self, font):
         self.font = font._FONT
+
+    def setInternalVar(self, var):
+        self.internal_var = var
 
     def leftText(self, text, y, x_init=None):
         if x_init:
