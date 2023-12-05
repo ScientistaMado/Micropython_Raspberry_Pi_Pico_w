@@ -4,8 +4,7 @@ from bme280 import BME280
 from encoder import Rotary
 from sh1106 import SH1106_I2C
 from time import sleep
-
-show_data = ""
+import bookerly_20
 
 
 def show_main_menu():
@@ -14,50 +13,44 @@ def show_main_menu():
 
 
 def show_temp():
-    global show_data
-    show_data = "temp"
+    menu_extras.internal_var = "temp"
     update_info()
     show_main_menu()
 
 
 def show_hum():
-    global show_data
-    show_data = "hum"
+    menu_extras.internal_var = "hum"
     update_info()
     show_main_menu()
 
 
 def show_press():
-    global show_data
-    show_data = "press"
+    menu_extras.internal_var = "press"
     update_info()
     show_main_menu()
 
 
 def show_all():
-    global show_data
-    show_data = "all"
+    menu_extras.internal_var = "all"
     update_info()
     show_main_menu()
 
 
 def update_info():
-    global show_data
-
-    t, h, p = bme.values()
+    t, h, p = bme.values
 
     oled.fill_rect(0, 20, 107, 43, 0)
 
-    if show_data == "temp":
+    if menu_extras.internalVar == "temp":
         oled_option.centerText(t, 34)
 
-    elif show_data == "hum":
+    elif menu_extras.internalVar == "hum":
         oled_option.centerText(h, 34)
 
-    elif show_data == "press":
+    elif menu_extras.internalVar == "press":
         oled_option.centerText(p, 34)
 
-    elif show_data == "all":
+    elif menu_extras.internalVar == "all":
         oled_option.centerText(t, 24)
         oled_option.centerText(h, 32)
         oled_option.centerText(p, 40)
@@ -81,6 +74,9 @@ oled_option = MENU(oled)
 menu_list = [main_menu]
 
 menu = NAVIGATE_MENU(menu_list)
+
+menu_extras = MENU(oled)
+menu_extras.setFont(bookerly_20)
 
 rotary = Rotary(15, 14, 13)
 
@@ -108,4 +104,4 @@ show_all()
 
 while True:
     update_info()
-    sleep(0.5)
+    sleep(1)
