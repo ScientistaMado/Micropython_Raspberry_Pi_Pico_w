@@ -13,10 +13,12 @@ Las plantillas pueden requerir el uso de bibliotecas disponibles en el repositor
 
 ## Plantillas y ejemplos
 1. [API Requests](/Templates/api_requests/)
-2. [Registro de desplazamiento](/Templates/Registro_desplazamiento/)
-3. [Ejemplos BLE](/Templates/BLE_examples/)
-4. [Menu oled SSD1306](/Templates/menu_oled_ssd1306)
-5. [Menu oled SH1106](/Templates/menu_oled_sh1106)
+2. [Encoder](/Templates/Encoder/)
+3. [Registro de desplazamiento](/Templates/Registro_desplazamiento/)
+4. [Ejemplos BLE](/Templates/BLE_examples/)
+5. [Menu oled SSD1306](/Templates/menu_oled_ssd1306)
+6. [Menu oled SH1106](/Templates/menu_oled_sh1106)
+7. [Menu Encoder](/Templates/Encoder_menu_oled)
 
 ## Íconos
 1. [BMP](/icons_oled/bmp/)
