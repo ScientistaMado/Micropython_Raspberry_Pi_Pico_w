@@ -27,7 +27,7 @@ def show_led_menu():
 
 
 def show_blue_led_menu():
-    print("Red LED menu")
+    print("Blue LED menu")
 
     oled.fill(0)
     menu_extras.centerText("Control Blue LED", 0)

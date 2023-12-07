@@ -4,10 +4,12 @@ from bme280 import BME280
 from encoder import Rotary
 from sh1106 import SH1106_I2C
 from time import sleep
+import ubuntu_15
 
 
 def show_main_menu():
-    menu_extras.centerText("BME280", 0)
+    oled.text("BME", 98, 0)
+    oled.text("280", 98, 8)
     main_menu.draw()
 
 
@@ -38,21 +40,27 @@ def show_all():
 def update_info():
     t, p, h = bme.values
 
-    oled.fill_rect(0, 20, 107, 43, 0)
+    oled.fill_rect(0, 20, 127, 43, 0)
 
     if menu_extras.internal_var == "temp":
-        oled_option.centerText(t, 34)
+        menu_extras.text("Temperatura", 20, 20)
+        menu_extras.text(t, 40, 38)
+        # oled_option.centerText(t, 34)
 
     elif menu_extras.internal_var == "hum":
-        oled_option.centerText(h, 34)
+        menu_extras.text("Humedad", 32, 20)
+        menu_extras.text(h, 40, 38)
+        # oled_option.centerText(h, 34)
 
     elif menu_extras.internal_var == "press":
-        oled_option.centerText(p, 34)
+        menu_extras.text("Presion", 40, 20)
+        menu_extras.text(p, 30, 38)
+        # oled_option.centerText(p, 34)
 
     elif menu_extras.internal_var == "all":
-        oled_option.centerText(t, 24)
-        oled_option.centerText(h, 32)
-        oled_option.centerText(p, 40)
+        oled.text(f'Temp: {t}', 5, 24)
+        oled.text(f'Hum:  {h}', 5, 34)
+        oled.text(f'Pres: {p}', 5, 44)
 
     oled.show()
 
@@ -62,7 +70,7 @@ oled = SH1106_I2C(128, 64, i2c, rotate=180)
 
 bme = BME280(i2c=i2c)
 
-main_menu = MENU_ICONS(oled, n_icons_x=4, n_icons_y=1)
+main_menu = MENU_ICONS(oled, n_icons_x=4, n_icons_y=1, separate=3)
 
 main_menu.add_option("temperatura", show_temp, 0, 0)
 main_menu.add_option("humedad", show_hum, 1, 0)
@@ -76,6 +84,7 @@ menu_list = [main_menu]
 menu = NAVIGATE_MENU(menu_list)
 
 menu_extras = MENU(oled)
+menu_extras.setFont(ubuntu_15)
 
 rotary = Rotary(11, 12, 13)
 
