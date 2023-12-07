@@ -176,7 +176,7 @@ class MENU_OPTIONS(MENU):
 
 class MENU_ICONS(MENU):
 
-    def __init__(self, oled, x_init=0, y_init=0, n_icons_x=1, n_icons_y=1, partial_update=True):
+    def __init__(self, oled, x_init=0, y_init=0, n_icons_x=1, n_icons_y=1, separate=0, partial_update=True):
         super().__init__(oled)
         self.options = []
         self.width = 0
@@ -189,6 +189,7 @@ class MENU_ICONS(MENU):
         self.index_navigate_y = 0
         self.max_index_navigate_x = n_icons_x - 1
         self.max_index_navigate_y = n_icons_y - 1
+        self.separate = separate
         self.index_select = None
 
     def add_option(self, icon_name: str, action: callable, row: int, col: int):
@@ -240,7 +241,7 @@ class MENU_ICONS(MENU):
                 else:
                     self.oled.blit(icon, x_init, y_init)
 
-                x_init += width
+                x_init += width + self.separate
 
             x_init = 0
             y_init += height
