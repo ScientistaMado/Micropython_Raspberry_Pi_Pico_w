@@ -77,7 +77,7 @@ main_menu.add_option("humedad", show_hum, 1, 0)
 main_menu.add_option("presion", show_press, 2, 0)
 main_menu.add_option("todo", show_all, 3, 0)
 
-oled_option = MENU(oled)
+# oled_option = MENU(oled)
 
 menu_list = [main_menu]
 
