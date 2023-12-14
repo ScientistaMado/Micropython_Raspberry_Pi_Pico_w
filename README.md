@@ -10,6 +10,7 @@ Las plantillas pueden requerir el uso de bibliotecas disponibles en el repositor
 1. [Weather Closet](/Proyects/weather_closet/)
 2. [Oled Bus API](/Proyects/oled_bus_api/)
 3. [Oled Bus API_BLE](/Proyects/oled_bus_api_BLE/)
+4. [Pong oled](/Proyects/pong_oled/)
 
 ## Plantillas y ejemplos
 1. [API Requests](/Templates/api_requests/)
