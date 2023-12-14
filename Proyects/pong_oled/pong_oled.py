@@ -1,7 +1,6 @@
 from machine import Pin, I2C
 from sh1106 import SH1106_I2C
 from ponglib import FIELD, PLAYER, BALL, GAME
-from time import sleep
 
 
 pot_player_1 = 26   # Pin ADC0
@@ -34,8 +33,10 @@ pong_game.showImageIntro("pong_intro")
 while not (button_start.value() or button_continue.value()):
     pass
 
-while True:
+pong_game.in_game = True
+pong_game.startGame()
 
+while True:
     if button_start.value() and pong_game.in_game == False:
         pong_game.in_game = True
         pong_game.startGame()
