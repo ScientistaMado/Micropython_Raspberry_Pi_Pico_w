@@ -1,22 +1,28 @@
 from machine import ADC
 from math import sin, cos, radians
 from time import sleep
+import framebuf
 
 
 class FIELD:
-    def __init__(self, oled, score_p1=0, score_p2=0, x_init_field=0, y_init_field=8, font_size=8):
+    def __init__(self, oled, score_p1=0, score_p2=0, x_init_field=0, y_init_field=0):
         self.oled = oled
-        self.font_size = font_size
+
+        self.font_size = 8
         self.score_p1 = score_p1
         self.score_p2 = score_p2
         self.score = f'P1 {self.score_p1} | {self.score_p2} P2'
-        self.y_init_field = y_init_field
-        self.x_init_field = x_init_field
-        self.x_end_field = self.oled.width - 2*self.x_init_field
+
+        self.x_0 = 1
+        self.x_init_field = self.x_0 + x_init_field
+        self.x_end_field = self.oled.width - self.x_init_field
         self.width_play_field = self.x_end_field - self.x_init_field
-        self.height_play_field = self.oled.height - self.y_init_field
-        self.y_end_field = self.y_init_field + self.height_play_field
-        self.drawScreen()
+
+        self.y_base = 10
+        self.y_0 = y_init_field + 1
+        self.y_init_field = self.y_base + y_init_field
+        self.y_end_field = self.oled.height - self.y_0
+        self.height_play_field = self.y_end_field - self.y_init_field
 
     def updateScore(self):
         self.score = f'P1 {self.score_p1} | {self.score_p2} P2'
@@ -25,7 +31,8 @@ class FIELD:
         self.oled.text(str(self.score), x, 1)
 
     def drawScreen(self):
-        # self.oled.hline(0, self.y_init_field-1, self.oled.width, 1)
+        self.oled.rect(self.x_init_field-1, self.y_init_field -
+                       1, self.width_play_field+2, self.height_play_field+2, 1)
         self.updateScore()
         self.oled.show()
 
@@ -34,6 +41,7 @@ class PLAYER:
     def __init__(self, oled, field, pin_player, long=2, thickness=2, n_player=1):
         self.oled = oled
         self.field = field
+        self.span = 1
         self.long = self.getLong(long)
         self.min_y = self.field.y_init_field
         self.pos_y_top = self.field.y_init_field
@@ -56,9 +64,9 @@ class PLAYER:
     def getPosX(self):
 
         if self.n_player == 1:
-            init_pos_x = self.field.x_init_field
+            init_pos_x = self.field.x_init_field + self.span
         elif self.n_player == 2:
-            init_pos_x = self.field.x_end_field - self.thickness
+            init_pos_x = self.field.x_end_field - self.thickness - self.span
         else:
             raise ValueError(
                 f"Número de jugador inválido: {self.n_player}")
@@ -74,8 +82,8 @@ class PLAYER:
         pos_y = int((pot_read/65535)*self.field.height_play_field) + \
             self.field.y_init_field
 
-        pos_y = self.clamp(pos_y, self.min_y, self.min_y +
-                           self.field.height_play_field - self.long)
+        pos_y = self.clamp(pos_y, self.min_y,
+                           self.field.y_end_field - self.long)
 
         self.pos_y_top = pos_y
         self.pos_y_bottom = pos_y + self.long
@@ -91,10 +99,10 @@ class BALL:
         self.oled = oled
         self.field = field
 
-        self.pos_x = self.oled.width//2
-        self.pos_y = (self.field.height_play_field//2)+self.field.y_init_field
-        self.radio = radio
+        self.pos_x = (self.field.x_end_field - self.field.x_init_field)//2
+        self.pos_y = (self.field.y_end_field - self.field.y_init_field)//2
 
+        self.radio = radio
         self.max_y = self.getMaxY()
         self.max_x = self.getMaxX()
 
@@ -102,8 +110,8 @@ class BALL:
         self.vel = vel
 
     def initBall(self):
-        self.pos_x = self.oled.width//2
-        self.pos_y = (self.field.height_play_field//2)+self.field.y_init_field
+        self.pos_x = (self.field.x_end_field - self.field.x_init_field)//2
+        self.pos_y = (self.field.y_end_field - self.field.y_init_field)//2
 
     def getMaxY(self):
         return self.pos_y + self.radio
@@ -139,7 +147,7 @@ class GAME:
 
         self.ball = ball
 
-        self.in_game = True
+        self.in_game = False
 
     def clamp(self, value, minimum, maximum):
         return max(minimum, min(value, maximum))
@@ -197,7 +205,24 @@ class GAME:
         self.updateGameScore()
 
     def startGame(self):
+        self.oled.fill(0)
         self.field.score_p1 = 0
         self.field.score_p2 = 0
-        self.updateGameScore()
+        self.field.drawScreen()
         self.runGame()
+
+    def openIcon(self, icon_id):
+
+        with open(f'icons/{icon_id}.pbm', "rb") as file:
+            file.readline()
+            xy = file.readline()
+            x = int(xy.split()[0])
+            y = int(xy.split()[1])
+            icon = bytearray(file.read())
+
+        return framebuf.FrameBuffer(icon, x, y, framebuf.MONO_HLSB)
+
+    def showImageIntro(self, name_image: str):
+
+        self.oled.blit(self.openIcon(name_image), 0, 0)
+        self.oled.show()
