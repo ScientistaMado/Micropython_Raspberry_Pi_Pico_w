@@ -79,11 +79,8 @@ class PLAYER:
     def updatePosY(self):
         pot_read = self.pin_player.read_u16()
 
-        pos_y = int((pot_read/65535)*self.field.height_play_field) + \
+        pos_y = int((pot_read/65535)*(self.field.height_play_field-self.long)) + \
             self.field.y_init_field
-
-        pos_y = self.clamp(pos_y, self.min_y,
-                           self.field.y_end_field - self.long)
 
         self.pos_y_top = pos_y
         self.pos_y_bottom = pos_y + self.long
@@ -100,7 +97,8 @@ class BALL:
         self.field = field
 
         self.pos_x = (self.field.x_end_field - self.field.x_init_field)//2
-        self.pos_y = (self.field.y_end_field - self.field.y_init_field)//2
+        self.pos_y = ((self.field.y_end_field -
+                      self.field.y_init_field)//2)+self.field.y_init_field
 
         self.radio = radio
         self.max_y = self.getMaxY()
@@ -111,7 +109,8 @@ class BALL:
 
     def initBall(self):
         self.pos_x = (self.field.x_end_field - self.field.x_init_field)//2
-        self.pos_y = (self.field.y_end_field - self.field.y_init_field)//2
+        self.pos_y = ((self.field.y_end_field -
+                      self.field.y_init_field)//2)+self.field.y_init_field
 
     def getMaxY(self):
         return self.pos_y + self.radio
@@ -168,11 +167,10 @@ class GAME:
                 self.stopGame()
 
         # Colisión con el jugador 2
-        elif self.ball.pos_x >= self.player_2.pos_x:
+        elif self.ball.getMaxX() >= self.player_2.pos_x:
 
             if self.player_2.pos_y_top <= self.ball.pos_y <= self.player_2.pos_y_bottom:
-                self.ball.pos_x = self.player_2.pos_x - \
-                    self.player_2.thickness - self.ball.radio
+                self.ball.pos_x = self.player_2.pos_x - self.ball.radio
                 self.ball.direction = 180 - self.ball.direction  # Rebote horizontal
             else:
                 self.field.score_p1 += 1
