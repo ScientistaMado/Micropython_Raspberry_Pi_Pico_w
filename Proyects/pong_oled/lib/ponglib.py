@@ -155,6 +155,10 @@ class GAME:
 
         # Colisión con los límites verticales del campo
         if self.ball.pos_y <= self.y_min or self.ball.getMaxY() >= self.y_max:
+
+            self.clamp(self.ball.pos_y, self.y_min+self.ball.radio,
+                       self.y_max - self.ball.radio)
+
             self.ball.direction = 360 - self.ball.direction  # Rebote vertical
 
         # Colisión con el jugador 1
