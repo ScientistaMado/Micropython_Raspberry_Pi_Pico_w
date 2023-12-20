@@ -74,7 +74,7 @@ connectWifi(SSID, PASSWORD)
 
 # Abre el documento y carga los datos json
 with open("example_response.json", "r") as file:
-    data = json.loads(file)
+    data = json.loads(file.read())
 
 # Modifica '229' por el recorrido que deseas consultar
 showInOled(data, '229')
