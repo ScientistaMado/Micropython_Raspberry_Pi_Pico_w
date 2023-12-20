@@ -37,9 +37,9 @@ pong_game.in_game = True
 pong_game.startGame()
 
 while True:
-    if button_start.value() and pong_game.in_game == False:
+    if button_start.value() and not pong_game.in_game:
         pong_game.in_game = True
         pong_game.startGame()
-    elif button_continue.value() and pong_game.in_game == False:
+    elif button_continue.value() and not pong_game.in_game:
         pong_game.in_game = True
         pong_game.runGame()
