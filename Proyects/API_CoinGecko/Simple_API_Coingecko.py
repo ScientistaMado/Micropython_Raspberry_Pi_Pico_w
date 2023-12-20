@@ -82,7 +82,7 @@ def fetch_api_simple_price(url_base: str, api_key: str, coin_info_list: dict, ti
     for key, value in parameters:
         if isinstance(value, bool):
             if value:
-                url += f'&include_{key}={str(value).lower()}'
+                url += f'&{key}={str(value).lower()}'
 
     try:
         response = requests.get(url, headers=headers, timeout=timeout)
@@ -153,9 +153,9 @@ def showInOled(data_coins, coin_search, vs_coin):
 
 coin_info = {"coins": ["bitcoin", "ethereum", "solana", "cardano"],
              "coin_vs": "usd",
-             "market_cap": False,
-             "24h_change": True,
-             "24hr_vol": False,
+             "include_market_cap": False,
+             "include_24hr_change": True,
+             "include_24hr_vol": False,
              }
 
 
