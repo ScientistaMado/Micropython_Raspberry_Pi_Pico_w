@@ -1,0 +1,17 @@
+{
+    "bitcoin": {
+        "usd": 42550,
+        "usd_market_cap": 833382426491.326,
+        "usd_24h_change": 2.82226732644238
+    },
+    "cardano": {
+        "usd": 0.582174,
+        "usd_market_cap": 20410290673.04524,
+        "usd_24h_change": 2.255204961746186
+    },
+    "solana": {
+        "usd": 73.83,
+        "usd_market_cap": 31589466101.602264,
+        "usd_24h_change": 3.3025087761118037
+    }
+}
