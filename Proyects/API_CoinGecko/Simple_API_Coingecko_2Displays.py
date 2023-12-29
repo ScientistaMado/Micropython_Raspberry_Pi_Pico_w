@@ -34,6 +34,7 @@ def connectWifi(oled, ssid, password, timeout=15):
     oled.text("Conectando", 10, 0)
     oled.show()
     dot = 10
+
     timeout_connect = 0
 
     while not station.isconnected():
@@ -42,14 +43,15 @@ def connectWifi(oled, ssid, password, timeout=15):
         oled.text(".", dot, 20)
         oled.show()
         sleep(1)
+
         timeout_connect += 1
         dot += 6
 
         if timeout_connect >= timeout:
-
             oled.fill(0)
             oled.text("No se pudo", 10, 20)
-            oled.text(f"conectara {ssid}", 10, 30)
+            oled.text(f"conectar a {ssid}", 10, 30)
+            oled.show()
 
             raise Exception(f"No se pudo conectar a {ssid}")
 
@@ -62,22 +64,18 @@ def connectWifi(oled, ssid, password, timeout=15):
 
 def fetch_api_simple_price(url_base: str, api_key: str, coin_info_list: dict, timeout=15):
 
-    # Encabezados de la solicitud con la clave API
     headers = {"Content-Type": "application/json",
                "Authorization": "Bearer " + api_key
                }
 
-    # URL base para este tipo de splicitud
     url = url_base + "/simple/price?ids="
 
-    # Agregaa las monedas a consultar
     for index, coin in enumerate(coin_info_list['coins']):
         if index == 0:
             url += coin.lower()
         else:
             url += f'%2C{coin.lower()}'
 
-    # Incluye la comparación (Por el momento solo admite una comparación)
     url += f'&vs_currencies={coin_info_list["coin_vs"].lower()}'
 
     parameters = coin_info_list.items()
@@ -119,6 +117,8 @@ def infoIcon(icon_id):
 def showInOled(oled, data_coins, coin_search, vs_coin):
 
     info_coin = data_coins[coin_search]
+    icon_data = infoIcon(coin_search)
+
     valor = info_coin[vs_coin]
 
     if valor < 100:
@@ -127,13 +127,9 @@ def showInOled(oled, data_coins, coin_search, vs_coin):
     change_24h = info_coin[f'{vs_coin}_24h_change']
     change_24h = f'{change_24h:0.2f}'
 
-    # change_24h = str(change_24h)
-
-    icon_data = infoIcon(coin_search)
-
-    def center_coin_name(name_coin, x_icon, x_icon_pos):
-        x = (oled.width + x_icon + x_icon_pos - len(name_coin)*8)//2
-        y = (icon_data[1]//2)-4
+    def center_coin_name(name_coin, x_icon_pos):
+        x = (oled.width + icon_data[0] + x_icon_pos - len(name_coin)*8)//2
+        y = (icon_data[1]//2)-6
 
         name = name_coin.upper()
         oled.text(name, x, y)
@@ -144,9 +140,8 @@ def showInOled(oled, data_coins, coin_search, vs_coin):
         oled.text(text, x, y)
 
     oled.fill(0)
-
-    oled.blit(icon_data[2], 20, 0)
-    center_coin_name(coin_search, icon_data[0], 10)
+    oled.blit(icon_data[2], 10, 0)
+    center_coin_name(coin_search, 10)
 
     centerText(f'{valor} {vs_coin}', icon_data[1]+8)
     centerText(f'{change_24h} %', icon_data[1]+20)
@@ -154,15 +149,15 @@ def showInOled(oled, data_coins, coin_search, vs_coin):
     oled.show()
 
 
-def showUpdate2():
-    oled_sh.fill(0)
-    oled_ssd.fill(0)
+def showUpdate2(oled1, oled2):
+    oled1.fill(0)
+    oled2.fill(0)
 
-    oled_sh.blit(infoIcon("logo_cg_letras")[2], 0, 0)
-    oled_ssd.text("Consultando", 5, 30)
+    oled1.text("Consultando", 5, 30)
+    oled2.blit(infoIcon("logo_cg_letras")[2], 0, 0)
 
-    oled_sh.show()
-    oled_ssd.show()
+    oled1.show()
+    oled2.show()
 
 
 coin_info = {"coins": ["bitcoin", "ethereum", "solana", "cardano"],
@@ -184,7 +179,8 @@ oled_sh = SH1106_I2C(128, 64, i2c_sh, rotate=180)
 # Conectar a la red WiFi
 connectWifi(oled_ssd, SSID, PASSWORD)
 
-showUpdate2()
+showUpdate2(i2c_ssd, oled_ssd)
+
 data = fetch_api_simple_price(URL_BASE, API_KEY, coin_info)
 
 # Imprimir la respuesta
@@ -204,6 +200,6 @@ while True:
     showInOled(oled_sh, data, "bitcoin", coin_info["coin_vs"])
     sleep(20)
 
-    showUpdate2()
+    showUpdate2(i2c_ssd, oled_ssd)
     data = fetch_api_simple_price(URL_BASE, API_KEY, coin_info)
     sleep(2)
