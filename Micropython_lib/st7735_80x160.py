@@ -19,15 +19,13 @@ TFTRotations = [0x00, 0x20, 0x60, 0xC0, 0xA0]
 TFTBGR = 0x08  # When set color is bgr else rgb.
 TFTRGB = 0x00
 
-# @micropython.native
 
-
+@micropython.native
 def clamp(aValue, aMin, aMax):
     return max(aMin, min(aMax, aValue))
 
-# @micropython.native
 
-
+@micropython.native
 def TFTColor(aR, aG, aB):
     '''Create a 16 bit rgb value from the given R,G,B from 0-255.
        This assumes rgb 565 layout and will be incorrect for bgr.'''
@@ -133,23 +131,23 @@ class TFT(object):
     def size(self):
         return self._size
 
-#   @micropython.native
+    @micropython.native
     def on(self, aTF=True):
         '''Turn display on or off.'''
         self._writecommand(TFT.DISPON if aTF else TFT.DISPOFF)
 
-#   @micropython.native
+    @micropython.native
     def invertcolor(self, aBool):
         '''Invert the color data IE: Black = White.'''
         self._writecommand(TFT.INVON if aBool else TFT.INVOFF)
 
-#   @micropython.native
+    @micropython.native
     def rgb(self, aTF=True):
         '''True = rgb else bgr'''
         self._rgb = aTF
         self._setMADCTL()
 
-#   @micropython.native
+    @micropython.native
     def rotation(self, aRot):
         '''0 - 3. Starts vertical with top toward pins and rotates 90 deg
            clockwise each step.'''
@@ -162,14 +160,14 @@ class TFT(object):
                 self._size = (self._size[1], self._size[0])
             self._setMADCTL()
 
-#  @micropython.native
+    @micropython.native
     def pixel(self, aPos, aColor):
         '''Draw a pixel at the given position'''
         if 0 <= aPos[0] < self._size[0] and 0 <= aPos[1] < self._size[1]:
             self._setwindowpoint(aPos)
             self._pushcolor(aColor)
 
-#   @micropython.native
+    @micropython.native
     def text(self, aPos, aString, aColor, aFont, aSize=1, nowrap=False):
         '''Draw a text at the given position.  If the string reaches the end of the
            display it is wrapped to aPos[0] on the next line.  aSize may be an integer
@@ -199,7 +197,7 @@ class TFT(object):
                     py += aFont["Height"] * wh[1] + 1
                     px = aPos[0]
 
-#   @micropython.native
+    @micropython.native
     def char(self, aPos, aChar, aColor, aFont, aSizes):
         '''Draw a character at the given position using the given font and color.
            aSizes is a tuple with x, y as integer scales indicating the
@@ -241,7 +239,7 @@ class TFT(object):
                         c >>= 1
                     px += aSizes[0]
 
-#   @micropython.native
+    @micropython.native
     def line(self, aStart, aEnd, aColor):
         '''Draws a line from aStart to aEnd in the given color.  Vertical or horizontal
            lines are forwarded to vline and hline.'''
@@ -286,7 +284,7 @@ class TFT(object):
                     e += dx
                     py += iny
 
-#   @micropython.native
+    @micropython.native
     def vline(self, aStart, aLen, aColor):
         '''Draw a vertical line from aStart for aLen. aLen may be negative.'''
         start = (clamp(aStart[0], 0, self._size[0]),
@@ -299,7 +297,7 @@ class TFT(object):
         self._setColor(aColor)
         self._draw(aLen)
 
-#   @micropython.native
+    @micropython.native
     def hline(self, aStart, aLen, aColor):
         '''Draw a horizontal line from aStart for aLen. aLen may be negative.'''
         start = (clamp(aStart[0], 0, self._size[0]),
@@ -312,7 +310,7 @@ class TFT(object):
         self._setColor(aColor)
         self._draw(aLen)
 
-#   @micropython.native
+    @micropython.native
     def rect(self, aStart, aSize, aColor):
         '''Draw a hollow rectangle.  aStart is the smallest coordinate corner
            and aSize is a tuple indicating width, height.'''
@@ -321,7 +319,7 @@ class TFT(object):
         self.vline(aStart, aSize[1], aColor)
         self.vline((aStart[0] + aSize[0] - 1, aStart[1]), aSize[1], aColor)
 
-#   @micropython.native
+    @micropython.native
     def fillrect(self, aStart, aSize, aColor):
         '''Draw a filled rectangle.  aStart is the smallest coordinate corner
            and aSize is a tuple indicating width, height.'''
@@ -344,7 +342,7 @@ class TFT(object):
         self._setColor(aColor)
         self._draw(numPixels)
 
-#   @micropython.native
+    @micropython.native
     def circle(self, aPos, aRadius, aColor):
         '''Draw a hollow circle with the given radius and color with aPos as center.'''
         self.colorData[0] = aColor >> 8
@@ -379,7 +377,7 @@ class TFT(object):
             self._setwindowpoint((xyn, yxn))
             self._writedata(self.colorData)
 
-#   @micropython.native
+    @micropython.native
     def fillcircle(self, aPos, aRadius, aColor):
         '''Draw a filled circle with given radius and color with aPos as center'''
         rsq = aRadius * aRadius
@@ -424,13 +422,13 @@ class TFT(object):
         data2 = bytearray([addr >> 8, addr & 0xff])
         self._writedata(data2)
 
-#   @micropython.native
+    @micropython.native
     def _setColor(self, aColor):
         self.colorData[0] = aColor >> 8
         self.colorData[1] = aColor
         self.buf = bytes(self.colorData) * 32
 
-#   @micropython.native
+    @micropython.native
     def _draw(self, aPixels):
         '''Send given color to the device aPixels times.'''
 
@@ -444,7 +442,7 @@ class TFT(object):
             self.spi.write(buf2)
         self.cs(1)
 
-#   @micropython.native
+    @micropython.native
     def _setwindowpoint(self, aPos):
         '''Set a single point for drawing a color to.'''
         x = self._offset[0] + int(aPos[0])
@@ -464,7 +462,7 @@ class TFT(object):
         self._writedata(self.windowLocData)
         self._writecommand(TFT.RAMWR)  # Write to RAM.
 
-#   @micropython.native
+    @micropython.native
     def _setwindowloc(self, aPos0, aPos1):
         '''Set a rectangular area for drawing a color to.'''
         self._writecommand(TFT.CASET)  # Column address set.
@@ -483,7 +481,7 @@ class TFT(object):
 
         self._writecommand(TFT.RAMWR)  # Write to RAM.
 
-    # @micropython.native
+    @micropython.native
     def _writecommand(self, aCommand):
         '''Write given command to the device.'''
         self.dc(0)
@@ -491,7 +489,7 @@ class TFT(object):
         self.spi.write(bytearray([aCommand]))
         self.cs(1)
 
-    # @micropython.native
+    @micropython.native
     def _writedata(self, aData):
         '''Write given data to the device.  This may be
            either a single int or a bytearray of values.'''
@@ -500,21 +498,21 @@ class TFT(object):
         self.spi.write(aData)
         self.cs(1)
 
-    # @micropython.native
+    @micropython.native
     def _pushcolor(self, aColor):
         '''Push given color to the device.'''
         self.colorData[0] = aColor >> 8
         self.colorData[1] = aColor
         self._writedata(self.colorData)
 
-    # @micropython.native
+    @micropython.native
     def _setMADCTL(self):
         '''Set screen rotation and RGB/BGR format.'''
         self._writecommand(TFT.MADCTL)
         rgb = TFTRGB if self._rgb else TFTBGR
         self._writedata(bytearray([TFTRotations[self.rotate] | rgb]))
 
-    # @micropython.native
+    @micropython.native
     def _reset(self):
         '''Reset the device.'''
         self.dc(0)
@@ -831,7 +829,7 @@ class TFT(object):
         self.cs(1)
         time.sleep_us(500)
 
-    # @micropython.native
+    @micropython.native
     def initg(self):
         '''Initialize a green tab version.'''
         self._reset()
