@@ -179,7 +179,7 @@ oled_sh = SH1106_I2C(128, 64, i2c_sh, rotate=180)
 # Conectar a la red WiFi
 connectWifi(oled_ssd, SSID, PASSWORD)
 
-showUpdate2(i2c_ssd, oled_ssd)
+showUpdate2(oled_ssd, oled_sh)
 
 data = fetch_api_simple_price(URL_BASE, API_KEY, coin_info)
 
@@ -200,6 +200,6 @@ while True:
     showInOled(oled_sh, data, "bitcoin", coin_info["coin_vs"])
     sleep(20)
 
-    showUpdate2(i2c_ssd, oled_ssd)
+    showUpdate2(oled_ssd, oled_sh)
     data = fetch_api_simple_price(URL_BASE, API_KEY, coin_info)
     sleep(2)
